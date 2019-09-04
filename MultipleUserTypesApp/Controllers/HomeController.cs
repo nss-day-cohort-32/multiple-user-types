@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MultipleUserTypesApp.Data;
 using MultipleUserTypesApp.Models;
-using MultipleUserTypesApp.Models.ViewModels;
 
 namespace MultipleUserTypesApp.Controllers
 {
