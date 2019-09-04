@@ -4,12 +4,16 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using MultipleUserTypesApp.Data;
 using MultipleUserTypesApp.Models;
+using MultipleUserTypesApp.Models.ViewModels;
 
 namespace MultipleUserTypesApp.Controllers
 {
     public class HomeController : Controller
     {
+
         public IActionResult Index()
         {
             return View();
