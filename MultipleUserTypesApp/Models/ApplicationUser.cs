@@ -18,7 +18,11 @@ namespace MultipleUserTypesApp.Models
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
+        [Required]
+        public int UserTypeId { get; set; }
+
         [NotMapped]
+        [Display(Name = "Full Name")]
         public string FullName
         {
             get
@@ -26,6 +30,8 @@ namespace MultipleUserTypesApp.Models
                 return FirstName + " " + LastName;
             }
         }
+
+        public UserType UserType { get; set; }
 
         public virtual ICollection<Product> Products { get; set; }
     }

@@ -20,6 +20,13 @@ namespace MultipleUserTypesApp.Data
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
+            UserType admin = new UserType()
+            {
+                UserTypeId = 1,
+                Title = "Admin"
+            };
+
+            modelBuilder.Entity<UserType>().HasData(admin);
 
             ApplicationUser user = new ApplicationUser
             {
@@ -32,7 +39,8 @@ namespace MultipleUserTypesApp.Data
                 EmailConfirmed = true,
                 LockoutEnabled = false,
                 SecurityStamp = "7f434309-a4d9-48e9-9ebb-8803db794577",
-                Id = "00000000-ffff-ffff-ffff-ffffffffffff"
+                Id = "00000000-ffff-ffff-ffff-ffffffffffff",
+                UserTypeId = 1
             };
             var passwordHash = new PasswordHasher<ApplicationUser>();
             user.PasswordHash = passwordHash.HashPassword(user, "Admin8*");

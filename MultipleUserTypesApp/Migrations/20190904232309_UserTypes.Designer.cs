@@ -10,8 +10,8 @@ using MultipleUserTypesApp.Data;
 namespace MultipleUserTypesApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190904194956_initial_setup")]
-    partial class initial_setup
+    [Migration("20190904232309_UserTypes")]
+    partial class UserTypes
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -179,6 +179,8 @@ namespace MultipleUserTypesApp.Migrations
                     b.Property<string>("UserName")
                         .HasMaxLength(256);
 
+                    b.Property<int>("UserTypeId");
+
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
@@ -189,6 +191,8 @@ namespace MultipleUserTypesApp.Migrations
                         .HasName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
+                    b.HasIndex("UserTypeId");
+
                     b.ToTable("AspNetUsers");
 
                     b.HasData(
@@ -196,7 +200,7 @@ namespace MultipleUserTypesApp.Migrations
                         {
                             Id = "00000000-ffff-ffff-ffff-ffffffffffff",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "b9070303-1468-4f29-b3c1-9283f7e4901d",
+                            ConcurrencyStamp = "7418cd97-1922-4213-b688-dc099210bf57",
                             Email = "admin@admin.com",
                             EmailConfirmed = true,
                             FirstName = "Admina",
@@ -204,11 +208,12 @@ namespace MultipleUserTypesApp.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ADMIN.COM",
                             NormalizedUserName = "ADMIN@ADMIN.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEDeWHrbjuAFxhtMcVgkqYE83dbMOaM9Ia1ga5Z7ZaA0eyER9cVA9Ck98ErwUZc8mpg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAED19zdk38d4wne36OTR7E5ecOZbJ1r3pqJp3RoUcqujDJtpIzMtK72vRwasiZpzhSA==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "7f434309-a4d9-48e9-9ebb-8803db794577",
                             TwoFactorEnabled = false,
-                            UserName = "admin@admin.com"
+                            UserName = "admin@admin.com",
+                            UserTypeId = 1
                         });
                 });
 
@@ -287,6 +292,27 @@ namespace MultipleUserTypesApp.Migrations
                         });
                 });
 
+            modelBuilder.Entity("MultipleUserTypesApp.Models.UserType", b =>
+                {
+                    b.Property<int>("UserTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Title")
+                        .IsRequired();
+
+                    b.HasKey("UserTypeId");
+
+                    b.ToTable("UserType");
+
+                    b.HasData(
+                        new
+                        {
+                            UserTypeId = 1,
+                            Title = "Admin"
+                        });
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole")
@@ -329,6 +355,14 @@ namespace MultipleUserTypesApp.Migrations
                     b.HasOne("MultipleUserTypesApp.Models.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("MultipleUserTypesApp.Models.ApplicationUser", b =>
+                {
+                    b.HasOne("MultipleUserTypesApp.Models.UserType", "UserType")
+                        .WithMany("ApplicationUsers")
+                        .HasForeignKey("UserTypeId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
