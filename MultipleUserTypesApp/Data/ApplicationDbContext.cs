@@ -89,5 +89,7 @@ namespace MultipleUserTypesApp.Data
             );
 
         }
+
+        public DbSet<MultipleUserTypesApp.Models.Product> Product { get; set; }
     }
 }
