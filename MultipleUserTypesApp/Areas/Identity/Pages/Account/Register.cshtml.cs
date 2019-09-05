@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using MultipleUserTypesApp.Data;
 using MultipleUserTypesApp.Models;
 
 namespace MultipleUserTypesApp.Areas.Identity.Pages.Account
@@ -20,6 +21,7 @@ namespace MultipleUserTypesApp.Areas.Identity.Pages.Account
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly ApplicationDbContext _context;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
@@ -80,7 +82,8 @@ namespace MultipleUserTypesApp.Areas.Identity.Pages.Account
                     UserName = Input.Email,
                     FirstName = Input.FirstName,
                     LastName = Input.LastName,
-                    Email = Input.Email
+                    Email = Input.Email,
+                    UserTypeId = 2
                 };
 
                 var result = await _userManager.CreateAsync(user, Input.Password);

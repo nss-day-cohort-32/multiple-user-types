@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MultipleUserTypesApp.Data;
 
@@ -19,7 +20,7 @@ namespace MultipleUserTypesApp.Controllers
         // GET: Users
         public async Task<IActionResult> Index()
         {
-                var applicationDbContext = _context.Users;
+                var applicationDbContext = _context.Users.Include(u => u.UserType);
                 return View(await applicationDbContext.ToListAsync());
 
         }
@@ -54,9 +55,28 @@ namespace MultipleUserTypesApp.Controllers
         }
 
         // GET: Users/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<IActionResult> Edit(string id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var userTypeList = _context.UserType.ToList();
+            var userTypeSelectList = userTypeList.Select(type => new SelectListItem
+            {
+                Text = type.Title,
+                Value = type.UserTypeId.ToString()
+            }).ToList();
+
+            ViewData["UserType"] = userTypeSelectList;
+
+            return View(user);
         }
 
         // POST: Users/Edit/5

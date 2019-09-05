@@ -99,5 +99,7 @@ namespace MultipleUserTypesApp.Data
         }
 
         public DbSet<MultipleUserTypesApp.Models.Product> Product { get; set; }
+
+        public DbSet<MultipleUserTypesApp.Models.UserType> UserType { get; set; }
     }
 }

@@ -1,0 +1,41 @@
+﻿@model IEnumerable<MultipleUserTypesApp.Models.UserType>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>User Types</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+        @if(item.UserTypeId != 1 && item.UserTypeId != 2)
+        {
+            <td>
+                    
+                <a asp-action="Edit" asp-route-id="@item.UserTypeId">Edit</a> |
+                <a asp-action="Delete" asp-route-id="@item.UserTypeId">Delete</a>
+            </td>
+        }else
+        {
+            <td>Edit & Delete Unavailable</td>
+        }
+        </tr>
+}
+    </tbody>
+</table>
