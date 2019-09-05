@@ -3,39 +3,51 @@
 @{
     ViewData["Title"] = "Index";
 }
+@using Microsoft.AspNetCore.Identity
+@using MultipleUserTypesApp.Models;
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@if (SignInManager.IsSignedIn(User) && UserManager.GetUserAsync(User).Result.UserTypeId == 1)
+{
+    <h1>User Types</h1>
 
-<h1>User Types</h1>
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Title)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    @if (item.Title == "Admin" || item.Title == "General")
+                    {
+                        <td>Edit & Delete Unavailable</td>
+                    }
+                    else
+                    {
+                        <td>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-        @if(item.Title == "Admin" || item.Title == "General")
-        {
-            <td>Edit & Delete Unavailable</td>
-        }else
-        {
-            <td>
-                    
-                <a asp-action="Edit" asp-route-id="@item.UserTypeId">Edit</a> |
-                <a asp-action="Delete" asp-route-id="@item.UserTypeId">Delete</a>
-            </td>
-        }
-        </tr>
+                            <a asp-action="Edit" asp-route-id="@item.UserTypeId">Edit</a> |
+                            <a asp-action="Delete" asp-route-id="@item.UserTypeId">Delete</a>
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
 }
-    </tbody>
-</table>
+else
+{
+    <h3>You must be an admin user to access this page</h3>
+}
