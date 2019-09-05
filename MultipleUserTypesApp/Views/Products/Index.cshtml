@@ -3,7 +3,9 @@
 @{
     ViewData["Title"] = "Index";
 }
-
+@using Microsoft.AspNetCore.Identity
+@using MultipleUserTypesApp.Models;
+@inject UserManager<ApplicationUser> UserManager
 <h1>Index</h1>
 
 <p>
@@ -31,7 +33,8 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+        @foreach (var item in Model)
+        {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Description)
@@ -48,12 +51,22 @@
             <td>
                 @Html.DisplayFor(modelItem => item.User.FullName)
             </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ProductId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ProductId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ProductId">Delete</a>
-            </td>
+            @*General Users cannot Edit or Delete Products*@
+            @if (UserManager.GetUserAsync(User).Result.UserTypeId != 2)
+            {
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.ProductId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.ProductId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ProductId">Delete</a>
+                </td>
+            }
+            else
+            {
+                <td>
+                <a asp-action="Details" asp-route-id="@item.ProductId">Details</a>
+                </td>
+            }
         </tr>
-}
+        }
     </tbody>
 </table>
