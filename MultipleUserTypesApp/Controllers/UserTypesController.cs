@@ -25,24 +25,6 @@ namespace MultipleUserTypesApp.Controllers
             return View(await _context.UserType.ToListAsync());
         }
 
-        // GET: UserTypes/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var userType = await _context.UserType
-                .FirstOrDefaultAsync(m => m.UserTypeId == id);
-            if (userType == null)
-            {
-                return NotFound();
-            }
-
-            return View(userType);
-        }
-
         // GET: UserTypes/Create
         public IActionResult Create()
         {
